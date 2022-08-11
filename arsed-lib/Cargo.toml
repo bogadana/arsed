@@ -3,3 +3,8 @@ name = "arsed-lib"
 version = "0.1.0"
 edition = "2021"
 license = "AGPL-3.0"
+
+[dependencies]
+arrayvec = "0.7.2"
+nom = "7.1.1"
+nom-derive = "0.10.0"
