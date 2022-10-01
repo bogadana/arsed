@@ -1,4 +1,7 @@
-mod headers;
+pub mod config;
+pub mod primitive;
+
+use crate::structs::headers;
 
 use nom::IResult;
 use nom_derive::Parse;
@@ -19,6 +22,7 @@ fn extended_header(i: &[u8]) -> IResult<&[u8], Box<dyn ExtendedHeader>> {
 
 #[cfg(test)]
 mod tests {
+    use nom::bytes::complete::take;
     use nom_derive::Parse;
 
     use crate::util::utf16_lit;
@@ -28,7 +32,11 @@ mod tests {
     #[test]
     fn parse_res_header() {
         let test_header = b"\x02\x00\x0C\x00\x40\x38\x0A\x00";
-
+        pub fn u8_bool(i: &[u8]) -> IResult<&[u8], bool> {
+            let (i, bool) = take(1usize)(i)?;
+        
+            Ok((i, bool[0] != 0))
+        }
         let (rest, result) = ResChunkHeader::parse(test_header).unwrap();
 
         let expected = ResChunkHeader {

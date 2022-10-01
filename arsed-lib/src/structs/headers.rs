@@ -1,5 +1,7 @@
 use nom_derive::NomLE;
 
+use super::config::ResConfig;
+
 #[repr(u16)]
 #[derive(PartialEq, Debug, NomLE)]
 pub enum ChunkType {
@@ -30,6 +32,7 @@ pub trait ExtendedHeader {
     fn get_base_header(&self) -> &ResChunkHeader;
 }
 
+#[repr(C)]
 #[derive(PartialEq, Debug, NomLE)]
 pub struct ResChunkHeader {
     pub res_type: ChunkType,
@@ -37,6 +40,7 @@ pub struct ResChunkHeader {
     pub size: u32,
 }
 
+#[repr(C)]
 #[derive(PartialEq, Debug, NomLE)]
 pub struct ResStringPoolHeader {
     pub base_header: ResChunkHeader,
@@ -47,6 +51,7 @@ pub struct ResStringPoolHeader {
     pub styles_start: u32,
 }
 
+#[repr(C)]
 #[derive(PartialEq, Debug, NomLE)]
 pub struct ResPackageHeader {
     pub base_header: ResChunkHeader,
@@ -70,14 +75,7 @@ pub struct ResTypeSpecHeader {
     pub entry_count: u32,
 }
 
-#[derive(PartialEq, Debug, NomLE)]
-pub struct ResConfig {
-    pub size: u32,
-    pub mcc: u16,
-    pub mnc: u16,
-    pub locale: u32, //https://github.com/aosp-mirror/platform_frameworks_base/blob/1660147b8466c402a749e531b00cf01925634e30/libs/androidfw/include/androidfw/ResourceTypes.h#L961
-}
-
+#[repr(C)]
 #[derive(PartialEq, Debug, NomLE)]
 pub struct ResTypeHeader {
     pub base_header: ResChunkHeader,
